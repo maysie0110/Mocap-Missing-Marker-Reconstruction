@@ -1,0 +1,2 @@
+
+For the data with 600 gap !  the test error is 42.53896
