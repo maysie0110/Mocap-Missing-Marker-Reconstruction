@@ -12,12 +12,13 @@ def update(ifrm, xa, ya, za,scatters):
     scatters.set_data(xa[ifrm], ya[ifrm])
     scatters.set_3d_properties(za[ifrm])
 
-def animate(mocap_seq,save=False):
+def animate(input_seq_file_name,save=False):
+    mocap_seq = np.genfromtxt(input_seq_file_name, delimiter=',')
     print("Number of frame", len(mocap_seq))
     print(mocap_seq)
 
     all_3d_coords = mocap_seq.reshape(-1, 3, 41)
-    print(all_3d_coords.shape)
+    #print(all_3d_coords.shape)
 
     nfr = len(mocap_seq) # Number of frames
     fps = 120 # Frame rate
@@ -81,7 +82,7 @@ def animate(mocap_seq,save=False):
     #    ax.plot(xline, yline, zline, c=colors[3])
 
 
-    ax.set_title('15 (out of 41) markers are missing in the boxing motion')
+    #ax.set_title('15 (out of 41) markers are missing in the boxing motion')
     ax.set_xlim(-750,750)
     ax.set_ylim(-750,750)
     ax.set_zlim(-750,750)
@@ -90,21 +91,17 @@ def animate(mocap_seq,save=False):
     if save:
         Writer = animation.writers['ffmpeg']
         writer = Writer(fps=120, metadata=dict(artist='Me'), bitrate=1800, extra_args=['-vcodec', 'libx264'])
-        ani.save('boxing-noisy.mp4', writer=writer)
+        ani.save(input_seq_file_name+ '.mp4', writer=writer)
     plt.show()
 
 if __name__ == '__main__':
-    
-    #data = generate_data(100, 2)
-    #main(data)
-    #seq = read_test_seq_from_binary(FLAGS.data_dir + '/test_seq/boxing.binary')
-    #print(seq)
-    original_seq = np.genfromtxt(FLAGS.data_dir + '/test_seq/boxing.binary_original.csv', delimiter=',')
-    noisy_seq = np.genfromtxt(FLAGS.data_dir + '/test_seq/boxing.binary_noisy.csv', delimiter=',')
-    mocap_seq = np.genfromtxt(FLAGS.data_dir + '/test_seq/boxing.binary_our_result.csv', delimiter=',')
+    #original_seq = np.genfromtxt(FLAGS.data_dir + '/test_seq/boxing.binary_original.csv', delimiter=',')
+    #noisy_seq = np.genfromtxt(FLAGS.data_dir + '/test_seq/boxing.binary_noisy.csv', delimiter=',')
+    #mocap_seq = np.genfromtxt(FLAGS.data_dir + '/test_seq/boxing.binary_our_result.csv', delimiter=',')
 
     #visualize(mocap_seq)
-    animate(original_seq)
-    #animate(mocap_seq,True)
-    #animate(noisy_seq,True)
+    #animate(FLAGS.real_data_dir + '/shakehands-MengChen.binary_our_result.csv', True)
+    animate(FLAGS.real_data_dir + '/basketball_2.binary_original.csv', True)
+    animate(FLAGS.real_data_dir + '/basketball_2.binary_noisy.csv', True)
+    animate(FLAGS.real_data_dir + '/basketball_2.binary_our_result.csv', True)
 

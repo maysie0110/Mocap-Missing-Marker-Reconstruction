@@ -81,7 +81,7 @@ def read_c3d_file(file_name):
     #labels_file = open("MainLabels.txt", "r")
     labels_file = open(os.getcwd() + "/code/ae/MainLabels.txt", "r")
 
-    debug = False
+    debug = True
 
     # Read the data
     reader = btk.btkAcquisitionFileReader()
@@ -92,6 +92,7 @@ def read_c3d_file(file_name):
     all_3d_coords = np.array([])
     point_id = 0
 
+    subjects=[]
     # Get subject name
     name = ''
     for i in range(0, acq.GetPoints().GetItemNumber()):
@@ -101,9 +102,11 @@ def read_c3d_file(file_name):
             print(label_string.split(':', 2))
         if (name_parts == 2 and label_string.split(':', 2)[1] == "LSHO"):
             name = label_string.split(':', 2)[0] + ':'
+            subjects.append(name)
 
     if debug:
         print(name)
+        print(subjects)
 
     # Check scaling factor
     file_instance = btk.btkC3DFileIO()
@@ -117,10 +120,13 @@ def read_c3d_file(file_name):
     while True:
         try:
             # Get the next label
-            label = name + labels_file.readline().splitlines()[0]
+            #label = name + labels_file.readline().splitlines()[0]
+            label = subjects[0] + labels_file.readline().splitlines()[0]
             if debug and point_id < 7:
                 print(label)
+
             next_point = acq.GetPoint(label).GetValues()
+            print(next_point)
         except IndexError:
             print('Read', point_id, 'skeleton markers during', acq.GetPointFrameNumber(), 'frames')
             break
@@ -139,7 +145,7 @@ def read_c3d_file(file_name):
 
         point_id += 1
 
-    print(missing_markers)
+    print("Missing markers", missing_markers)
 
     # Convert to the hips centered coordinates
     hips = np.zeros([all_3d_coords.shape[0], 3])  # coordinates of the hips at each time-step
@@ -174,7 +180,7 @@ def read_c3d_file(file_name):
         print("\nWATCH! The file ", file_name, " had maximal value ", max, "\n")
 
     # For debug - Visualize the skeleton
-    # visualize(mocap_seq)
+    visualize(mocap_seq)
 
     return mocap_seq
 
@@ -597,7 +603,7 @@ if __name__ == '__main__':
 
     # Do some testing
 
-    test = False
+    test = True
 
     if test:
         #write_test_seq_in_binary(FLAGS.data_dir + '/../test_seq/86_14.c3d',
@@ -608,10 +614,14 @@ if __name__ == '__main__':
         #                         FLAGS.data_dir + '/boxing.binary')
 
         #write_test_seq_in_binary(os.path.join(os.getcwd(), "Datasets/real_data/Trial002-Reconstructed-SelectedFrame.c3d"),
-        #            os.path.join(os.getcwd(), "Datasets/real_data/shakehands.binary"))
+        #            os.path.join(os.getcwd(), "Datasets/real_data/shakehands-May.binary"))
+        write_test_seq_in_binary(os.path.join(os.getcwd(), "Datasets/real_data/Trial003-Convo-Labeled.c3d"),
+                    os.path.join(os.getcwd(), "Datasets/real_data/convo-May.binary"))
         
-        write_test_seq_in_binary(os.path.join(os.getcwd(), "Datasets/real_data/14_01.c3d"),
-                    os.path.join(os.getcwd(), "Datasets/real_data/boxing_2.binary"))
+        #write_test_seq_in_binary(os.path.join(os.getcwd(), "Datasets/real_data/14_01.c3d"),
+        #            os.path.join(os.getcwd(), "Datasets/real_data/boxing_2.binary"))
+        #write_test_seq_in_binary(os.path.join(os.getcwd(), "Datasets/real_data/86_14.c3d"),
+        #            os.path.join(os.getcwd(), "Datasets/real_data/basketball_2.binary"))
 
 
     else:

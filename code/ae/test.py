@@ -77,14 +77,12 @@ def main():
 
             #rmse = test(ae, FLAGS.data_dir + '/test_seq/boxing.binary', max_val, mean_pose, True)
             #print("\nOur RMSE for boxing is : ", rmse)
-            rmse = test(ae, FLAGS.real_data_dir + '/boxing_2.binary', max_val, mean_pose, True)
-            print("\nOur RMSE for shake hands is : ", rmse)
+            #rmse = test(ae, FLAGS.real_data_dir + '/boxing_2.binary', max_val, mean_pose, True)
+            #print("\nOur RMSE for shake hands is : ", rmse)
+            rmse = test(ae, FLAGS.real_data_dir + '/basketball_2.binary', max_val, mean_pose, True)
+            print("\nOur RMSE for basketball is : ", rmse)
 
 
 
 if __name__ == '__main__':
-    #write_test_seq_in_binary(FLAGS.real_data_dir + '/Trial002-Reconstructed-SelectedFrame.c3d',
-    #                    FLAGS.real_data_dir + '/shakehands.binary')
-    #write_test_seq_in_binary(FLAGS.real_data_dir + '/14_01.c3d',
-    #                    FLAGS.real_data_dir + '/boxing_2.binary')
     main()

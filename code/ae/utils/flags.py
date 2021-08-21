@@ -110,5 +110,5 @@ flags.DEFINE_string('contin_test_file', 'our_model_results.txt',
                     'Filey to put the results of the test in "real life" conditions')
 flags.DEFINE_bool("plot_error", False,
                   "plot error for every frame in a situation when some markers are missing over long period of time")
-flags.DEFINE_integer('skip_duration', 180, 'amount of first frames to be ignored')
-flags.DEFINE_integer('no_gap_duration', 120, 'amount of frames with all the markers at the beginning and end of the sequence')
+flags.DEFINE_integer('skip_duration', 0, 'amount of first frames to be ignored')
+flags.DEFINE_integer('no_gap_duration', 0, 'amount of frames with all the markers at the beginning and end of the sequence')
